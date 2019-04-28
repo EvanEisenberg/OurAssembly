@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" href="/public/css/main.css">
+  <title>Quotes to make you go "Wow"</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
+</head>
+<div class="nav">
+  <div>
+    <div class="tag"><a href="/science">Quotes about Science</a></div>
+    <div class="tag"><a href="/truth">Quotes about Truth</a></div>
+    <div class="tag"><a href="/jefferson">Quotes from Thomas Jefferson</a></div>
+    <div class="tag"><a href="/short">Short</a></div>
+    <div class="tag"><a href="/long">Long</a></div>
+  </div>
+</div>
+
+<body>
+  <article>
+    <h1>Create a Quote:</h1>
+    <form method="POST" action="/create">
+      <div class="input-field">
+        <label>Quote:</label>
+        <input type="text" name="quote" size="50" placeholder="To Be...">
+      </div>
+      <div class="input-field">
+        <label>Author:</label>
+        <input type="text" name="author" size="50" placeholder="William Shakespeare">
+      </div>
+      <div class="input-field">
+        <label>Year:</label>
+        <input type="number" name="year" size="50" placeholder="1603">
+      </div>
+      <div class="input-field">
+        <label>Popularity:</label>
+        <input type="text" name="popularity" size="50" placeholder="High">
+      </div>
+      <div class="input-field">
+        <label>Categories:</label>
+        <input type="text" name="categories" size="50" placeholder="Category1 Category2 etc. (seperated by spaces)">
+      </div>
+      <button type="submit">Create Quote</button>
+    </form>
+  </article>
+
+  {{{body}}}
+
+</body>
+
+</html>

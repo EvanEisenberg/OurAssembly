@@ -1,0 +1,52 @@
+<article>
+    <h1>Search Quotes:</h1>
+    <form>
+      <input type="text" name="input" id="input"><br>
+    </form>
+</article>
+
+<div id="datacontainer">
+{{#each data}}
+<article id="{{this.quote}}" class="art">
+	<h2 class="author">{{this.author}}</h2>
+	<hr>
+	<p class="quote">{{this.quote}}</p>
+	<p><em>Said in {{this.year}} | Popularity: {{this.popularity}} | Categories: {{this.categories}} </em></p>
+</article>
+{{else}}
+<article>
+    <h1>There are no quotes yet. :(</h1>
+</article>
+{{/each}}
+<article id="noquotes">
+    <h1>There are no quotes matching that search :(</h1>
+</article>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
+  <script>
+	$( document ).ready(function() {
+		$("#noquotes").hide();
+	});
+
+    $("#input").on("keyup", function(){
+      	var filter = $("#input").val();
+		
+		// This is such a shitty hack but it works
+		$(".art").each(function( index ) {
+			cur_id = $(this).attr('id');
+			if (cur_id.indexOf(filter) >= 0){
+				$(this).show();
+			} else {
+				$(this).hide();
+			}
+			var vis_count = $(".art :visible").length;
+			if (vis_count == 0) {
+				$("#noquotes").show();
+			} else {
+				$("#noquotes").hide();
+			}
+			
+		});
+    });
+  </script>

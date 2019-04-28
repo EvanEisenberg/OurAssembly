@@ -1,0 +1,37 @@
+{"quotes":
+    [{
+        "quote":"yeet",
+        "author":"Thomas Jefferson",
+        "year": 1800,
+        "popularity":"high",
+        "categories":["Truth","Honesty"]
+    },
+    {
+        "quote":"ya ya yeet",
+        "author":"Albert Einstein",
+        "year": 1950,
+        "popularity":"medium",
+        "categories":["Space","Science"]
+    },
+    {
+        "quote":"hold this beer",
+        "author":"Todd, the absolute Madman",
+        "year": 2018,
+        "popularity":"low",
+        "categories":["Beer","Hold"]
+    },
+    {
+        "quote":"wasn't me",
+        "author":"Shaggy",
+        "year": 2000,
+        "popularity":"high",
+        "categories":["Truth","Honesty"]
+    },
+    {
+        "quote":"we can mix that",
+        "author":"Marie Curie",
+        "year": 1912,
+        "popularity":"medium",
+        "categories":["Science","Mixing"]
+    }]
+}
