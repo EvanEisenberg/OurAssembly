@@ -1,36 +1,58 @@
 
-# Quotes to make you go "Wow"
+# Bills, Congress Stuff
 
 ---
 
-Name: Camilo Calvo-Alcaniz
+Names: Camilo Calvo-Alcaniz,  Evan Eisenberg, Asher Fink
 
-Date: 4/12/19
+Date:
 
 Project Topic: Crowdsourced Quotes Page
 
-URL: 
+URL:
 
 ---
 
+<!-- NOTES -->
+<!--
+  Handlebars Pages:
+  Homepage - laws and Bills
+  View Bill
+  view Laws
+  view congressman
+  Form submission
+-->
 
 ### 1. Data Format and Storage
 
+<!-- TODO: update this -->
 Data point fields:
-- `Field 1`: Quote       `Type: String`
-- `Field 2`: Author      `Type: String`
-- `Field 3`: Year        `Type: Number`
-- `Field 4`: Popularity  `Type: String`
-- `Field 5`: Categories  `Type: [String]`
+- `Field 1`: Text      `Type: String`
 
-Schema: 
+Schema:
 ```javascript
-{
-   quote: String,
-   author: String,
-   year: Number,
-   popularity: String,
-   categories: [String]
+Bill: {
+   text: String,
+   authors: [String],
+   date_introduced: String,
+   committee: String,
+   bill_id: Number,
+   is_law: Boolean
+}
+
+Law: {
+  text: String,
+  authors: [String],
+  date_introduced: String,
+  date_passed: String,
+  committee: String,
+  bill_id: Number,
+}
+
+CongressMember: {
+  name: String,
+  party: String,
+  year_inaugurated: Number
 }
 ```
 
@@ -40,23 +62,23 @@ HTML form route: `/create`
 
 POST endpoint route: `/api/create`
 
-Example Node.js POST request to endpoint: 
+Example Node.js POST request to endpoint:
 ```javascript
 var request = require("request");
 
-var options = { 
+var options = {
     method: 'POST',
     url: 'http://localhost:3000/api/create',
-    headers: { 
-        'content-type': 'application/x-www-form-urlencoded' 
+    headers: {
+        'content-type': 'application/x-www-form-urlencoded'
     },
-    form: { 
+    form: {
        quote: "To be or not to be",
        author: "William Shakespeare",
        year: 1603,
        popularity: "High",
        categories: ["Truth","Honesty"]
-    } 
+    }
 };
 
 request(options, function (error, response, body) {
