@@ -13,19 +13,9 @@ URL:
 
 ---
 
-<!-- NOTES -->
-<!--
-  Handlebars Pages:
-  Homepage - laws and Bills
-  View Bill
-  view Laws
-  view congressman
-  Form submission
--->
-
 ### 1. Data Format and Storage
 
-<!-- TODO: update this -->
+<!-- TODO: update this for each of: bill, law, congress member -->
 Data point fields:
 - `Field 1`: Text      `Type: String`
 
@@ -36,17 +26,15 @@ Bill: {
    authors: [String],
    date_introduced: String,
    committee: String,
-   bill_id: Number,
-   is_law: Boolean
+   bill_id: Number
 }
 
 Law: {
   text: String,
   authors: [String],
-  date_introduced: String,
   date_passed: String,
   committee: String,
-  bill_id: Number,
+  bill_id: Number
 }
 
 CongressMember: {
@@ -68,16 +56,16 @@ var request = require("request");
 
 var options = {
     method: 'POST',
-    url: 'http://localhost:3000/api/create',
+    url: 'http://localhost:3000/api/addBill',
     headers: {
         'content-type': 'application/x-www-form-urlencoded'
     },
     form: {
-       quote: "To be or not to be",
-       author: "William Shakespeare",
-       year: 1603,
-       popularity: "High",
-       categories: ["Truth","Honesty"]
+        text: "Sample bill",
+        authors: ["sample author 1", "sample author 2"],
+        date_introduced: "november 3",
+        committee: "committee on bill stuff",
+        bill_id: 123
     }
 };
 
@@ -90,7 +78,9 @@ request(options, function (error, response, body) {
 
 ### 3. View Data
 
-GET endpoint route: `/api/getAll`
+GET endpoint route: `/api/getAllBillsAndLaws`
+
+<!-- Past here not updated yet -->
 
 ### 4. Search Data
 
