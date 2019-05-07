@@ -128,10 +128,13 @@ app.use('/public', express.static('public'));
    });
  });
 
- /* Non-API endpoints here */
 
+ /* Non-API endpoints here */
 app.get('/',function(req,res){
-  res.render('home',{data: _DATA});
+  Bill.find({}, function(err, doc) {
+    console.log(doc);
+    res.render('home',{data: doc})
+  })
 });
 
 app.get('/science',function(req,res){
@@ -196,5 +199,5 @@ app.post('/create', function(req, res) {
 });
 
 app.listen(3000, function() {
-  console.log('Listening!');
+  console.log('Listening on 3000!');
 });
