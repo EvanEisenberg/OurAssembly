@@ -131,10 +131,13 @@ app.use('/public', express.static('public'));
 
  /* Non-API endpoints here */
 app.get('/',function(req,res){
-  Bill.find({}, function(err, doc) {
-    console.log(doc);
-    res.render('home',{data: doc})
-  })
+  Bill.find({},function(err, bill){
+    if(err) throw err
+    Law.find({},function(err, law){
+          if(err) throw err
+          res.render('home', {bills: bill, laws: law})
+    });
+  });
 });
 
 app.get('/science',function(req,res){
@@ -149,6 +152,7 @@ app.get('/science',function(req,res){
 
 app.get('/truth',function(req,res){
   var new_quotes = [];
+
     _DATA.forEach(function(quo) {
         if (quo.categories.includes("Truth")) {
             new_quotes.push(quo);
