@@ -134,12 +134,38 @@ app.get('/',function(req,res){
   Bill.find({},function(err, bill){
     if(err) throw err
     Law.find({},function(err, law){
-          if(err) throw err
-          res.render('home', {bills: bill, laws: law})
+      if(err) throw err
+      res.render('home', {bills: bill, laws: law})
     });
   });
 });
 
+app.get('/getAllBills', function(req,res) {
+  Bill.find({},function(err, bill){
+    if(err) throw err
+    res.render('bills', {bills: bill})
+  });
+});
+
+app.get('/getAllLaws', function(req,res) {
+  Law.find({},function(err, law){
+    if(err) throw err
+    res.render('laws', {laws: law})
+  });
+});
+
+app.get('/getAllCongressMembers',function(req,res){
+  CongressMember.find({},function(err, congressMember){
+    if(err) throw err
+    res.render('congressMembers', {congressMembers: congressMember})
+  });
+});
+
+//needs the rest of the non-api endpoints here. I started looking into 
+//how to do the post requests to create them, but that looks more involved
+//than I have time for right now
+
+/*
 app.get('/science',function(req,res){
   var new_quotes = [];
     _DATA.forEach(function(quo) {
@@ -202,6 +228,7 @@ app.post('/create', function(req, res) {
     res.redirect("/");
 });
 
+*/
 app.listen(3000, function() {
   console.log('Listening on 3000!');
 });
