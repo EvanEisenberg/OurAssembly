@@ -19,27 +19,27 @@
 
 <body>
   <article>
-    <h1>Create a Quote:</h1>
+    <h1>Upload a Bill:</h1>
     <form method="POST" action="/create">
       <div class="input-field">
-        <label>Quote:</label>
-        <input type="text" name="quote" size="50" placeholder="To Be...">
+        <label>Bill Text:</label>
+        <input type="text" name="text" size="50" placeholder="To Be...">
       </div>
       <div class="input-field">
-        <label>Author:</label>
-        <input type="text" name="author" size="50" placeholder="William Shakespeare">
+        <label>Authors:</label>
+        <input type="text" name="authors" size="50" placeholder="John Adams, George Washington (comma separated)">
       </div>
       <div class="input-field">
-        <label>Year:</label>
-        <input type="number" name="year" size="50" placeholder="1603">
+        <label>Date Introduced:</label>
+        <input type="date" name="date_introduced" size="50" placeholder="05/08/2019">
       </div>
       <div class="input-field">
-        <label>Popularity:</label>
-        <input type="text" name="popularity" size="50" placeholder="High">
+        <label>Committee:</label>
+        <input type="text" name="committee" size="50" placeholder="Interior">
       </div>
       <div class="input-field">
-        <label>Categories:</label>
-        <input type="text" name="categories" size="50" placeholder="Category1 Category2 etc. (seperated by spaces)">
+        <label>Bill ID:</label>
+        <input type="number" name="bill_id" size="50" placeholder="12345">
       </div>
       <button type="submit">Create Quote</button>
     </form>
