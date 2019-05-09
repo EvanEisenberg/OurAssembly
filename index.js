@@ -74,7 +74,8 @@ app.use('/public', express.static('public'));
       authors: req.body.authors,
       date_introduced: req.body.date_introduced,
       committee: req.body.committee,
-      bill_id: req.body.bill_id
+      bill_id: req.body.bill_id,
+      preview: body.text.substring(0, 150)
    });
 
    bill.save(function(err) {
@@ -131,24 +132,15 @@ app.use('/public', express.static('public'));
 
  /* Non-API endpoints here */
 app.get('/',function(req,res){
-  Bill.find({},function(err, bill){
+  Bill.find({}, null, {sort: '-date_introduced'}, function(err, bill){
     if(err) throw err
-    Law.find({},function(err, law){
-      if(err) throw err
-      res.render('home', {bills: bill, laws: law})
-    });
+    res.render('home', {bills: bill})
   });
 });
 
-app.get('/getAllBills', function(req,res) {
-  Bill.find({},function(err, bill){
-    if(err) throw err
-    res.render('bills', {bills: bill})
-  });
-});
 
 app.get('/getAllLaws', function(req,res) {
-  Law.find({},function(err, law){
+  Law.find({}, null, {sort: '-date_introduced'}, function(err, law){
     if(err) throw err
     res.render('laws', {laws: law})
   });
@@ -161,9 +153,67 @@ app.get('/getAllCongressMembers',function(req,res){
   });
 });
 
-//needs the rest of the non-api endpoints here. I started looking into 
-//how to do the post requests to create them, but that looks more involved
-//than I have time for right now
+
+ // test this with testing_add_bill.js
+ app.post("/addBill", function(req, res) {
+  var bill = new Bill({
+    text: req.body.text,
+    authors: req.body.authors,
+    date_introduced: req.body.date_introduced,
+    committee: req.body.committee,
+    bill_id: req.body.bill_id, 
+    preview: req.body.text.substring(0, 150)
+  });
+  bill.save(function(err) {
+        if(err) throw err
+        app.get('/');
+  }); 
+});
+
+// test this with testing_add_law.js
+app.post("/api/addLaw", function(req, res) {
+  var law = new Law({
+     text: req.body.text,
+     authors: req.body.authors,
+     date_passed: req.body.date_passed,
+     committee: req.body.committee,
+     bill_id: req.body.bill_id
+  });
+
+  law.save(function(err) {
+        if(err) throw err
+        return res.send("Law saved!")
+  });
+});
+
+// test this with testing_add_congress_member.js
+app.post("/api/addCongressMember", function(req, res) {
+  var congressMember = new CongressMember({
+     name: req.body.name,
+     party: req.body.party,
+     year_inaugurated: req.body.year_inaugurated
+  });
+
+  congressMember.save(function(err) {
+        if(err) throw err
+        return res.send("Congress Member saved!")
+  });
+});
+
+// test this with testing_delete_bill.js
+app.delete("/api/deleteBill", function(req, res) {
+  Bill.deleteOne({bill_id: req.body.bill_id},function(err, bill){
+        if(err) throw err
+        return res.send("If present, bill with id " + req.body.bill_id + " deleted");
+  });
+});
+
+app.delete("/api/deleteLaw", function(req, res) {
+  Law.deleteOne({bill_id: req.body.bill_id},function(err, law){
+        if(err) throw err
+        return res.send("If present, law with id " + req.body.bill_id + " deleted");
+  });
+});
 
 /*
 app.get('/science',function(req,res){

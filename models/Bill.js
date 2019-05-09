@@ -20,6 +20,10 @@ var billSchema = new mongoose.Schema({
     bill_id: {
       type: Number,
       required: true
+    },
+    preview: {
+      type: String,
+      required: true
     }
 });
 

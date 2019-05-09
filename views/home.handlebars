@@ -1,52 +1,50 @@
-<article>
-    <h1>Search Bills:</h1>
-    <form>
-      <input type="text" name="input" id="input"><br>
-    </form>
-</article>
-
-<div id="datacontainer">
-{{#each data}}
-<article id="{{this.quote}}" class="art">
-	<h2 class="author">{{this.author}}</h2>
-	<hr>
-	<p class="quote">{{this.quote}}</p>
-	<p><em>Said in {{this.year}} | Popularity: {{this.popularity}} | Categories: {{this.categories}} </em></p>
-</article>
-{{else}}
-<article>
-    <h1>There are no quotes yet. :(</h1>
-</article>
-{{/each}}
-<article id="noquotes">
-    <h1>There are no quotes matching that search :(</h1>
-</article>
-</div>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
-  <script>
-	$( document ).ready(function() {
-		$("#noquotes").hide();
-	});
+<h2>Search</h2>
+<input type="text" id="search" placeholder="Search by Bill Id"></input>
 
-    $("#input").on("keyup", function(){
-      	var filter = $("#input").val();
-		
-		// This is such a shitty hack but it works
-		$(".art").each(function( index ) {
-			cur_id = $(this).attr('id');
-			if (cur_id.indexOf(filter) >= 0){
-				$(this).show();
-			} else {
-				$(this).hide();
+<h2>Recently Introduced Bills:</h2>
+<div id="homePage">
+	{{#each bills}}
+	<article class="article">
+		<h2 class="bill_id">{{this.bill_id}}</h2> <i>{{this.date_introduced}}</i>
+		<hr>
+		<div class="content">
+			{{{this.preview}}}
+		</div>
+		<a href="/bill/{{this.bill_id}}">Read more...</a>
+	</article>
+	<script>
+		$("#search").on("keyup", function () {
+			searchBox = document.getElementById("search").value.toLowerCase();
+			var articles = document.getElementsByClassName("article");
+			console.log(articles);
+			for (var node of articles) {
+				console.log(node);
+				if (!node.textContent.trim().toLowerCase().startsWith(searchBox)) {
+					node.style.display = "none";
+				} else {
+					node.style.display = "block";
+				}
+				var page = document.getElementById("homePage");
+				var empty = document.getElementById("emptyText");
+				if(page.innerText.length == 0) {
+					console.log("empty");
+					empty.style.display = "block";
+				} else {
+					empty.style.display = "none";
+					if(page.innerText.length == 0) {
+						empty.style.display = "block";
+					}
+				}
 			}
-			var vis_count = $(".art :visible").length;
-			if (vis_count == 0) {
-				$("#noquotes").show();
-			} else {
-				$("#noquotes").hide();
-			}
-			
 		});
-    });
-  </script>
+	</script>
+	{{else}}
+
+	<article>
+		<h1>There are no Bills or Laws yet </h1>
+		<a href="/addBill">Create the first Bill!</a>
+	</article>
+	{{/each}}
+	<div id="emptyText" style="display: none">There are no reviews that match your search :(</div>
+</div>
