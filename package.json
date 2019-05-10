@@ -17,6 +17,7 @@
     "mongoose": "^5.5.5",
     "morgan": "^1.8.1",
     "request": "^2.88.0",
+    "socket.io": "^2.2.0",
     "underscore": "^1.9.1"
   }
 }

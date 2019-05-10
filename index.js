@@ -21,6 +21,14 @@ mongoose.connection.on('error', function() {
 
 var app = express();
 
+// these two lines are necessary for sockets
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+
+io.on('connection', function(socket) {
+    console.log('NEW connection.');
+});
+
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -34,7 +42,7 @@ app.use('/public', express.static('public'));
  */
 
  /* API endpoints here */
- 
+
  app.get('/api/getAllBills',function(req,res){
    Bill.find({},function(err, bills){
          if(err) throw err
@@ -161,13 +169,13 @@ app.get('/getAllCongressMembers',function(req,res){
     authors: req.body.authors,
     date_introduced: req.body.date_introduced,
     committee: req.body.committee,
-    bill_id: req.body.bill_id, 
+    bill_id: req.body.bill_id,
     preview: req.body.text.substring(0, 150)
   });
   bill.save(function(err) {
         if(err) throw err
         app.get('/');
-  }); 
+  });
 });
 
 // test this with testing_add_law.js
@@ -279,6 +287,8 @@ app.post('/create', function(req, res) {
 });
 
 */
-app.listen(3000, function() {
+
+// necessary for sockets to use "http" here
+http.listen(3000, function() {
   console.log('Listening on 3000!');
 });

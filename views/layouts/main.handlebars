@@ -5,7 +5,15 @@
   <meta charset="UTF-8">
   <link rel="stylesheet" type="text/css" href="/public/css/main.css">
   <title>Laws and Bills</title>
+  <script src="/socket.io/socket.io.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
+  <script>
+    var socket = io();
+  //   $('#billForm').submit(function(){
+  //   alert("submitted");
+  //   return false;
+  // });
+  </script>
 </head>
 <div class="nav">
   <div>
@@ -20,7 +28,7 @@
 <body>
   <article>
     <h1>Upload a Bill:</h1>
-    <form method="POST" action="/addBill">
+    <form id="billForm" method="POST" action="/addBill">
       <div class="input-field">
         <label>Bill Text:</label>
         <input type="text" name="text" size="50" placeholder="To Be...">
