@@ -96,9 +96,23 @@ request(options, function (error, response, body) {
 });
 ```
 
-### 4. View Data
+### 4. API
 
-GET endpoint route: `/api/getAllBillsAndLaws`, `/api/getAllBills`, `/api/getAllLaws`, `/api/getAllCongressMembers`
+GET endpoint routes:
+* `/api/getAllBillsAndLaws`,
+* `/api/getAllBills`
+* `/api/getAllLaws`
+* `/api/getAllCongressMembers`
+
+POST endpoint routes:
+* `/api/addBill`,
+* `/api/addLaw,`
+* `/api/addCongressMember`
+
+DELETE endpoint routes:
+* `/api/deleteBill`
+* `/api/deleteLaw`
+* `/api/deleteCongressMember`
 
 ### 5. Search Data
 
@@ -119,7 +133,7 @@ Pages for posting data
 6. Create Law -> `/create/law`
 7. Add Congress Member -> `/add/congressMember`
 
-### 7. Notification System
+### 7. Notification System (using sockets)
 Whenever a bill or law is added, anyone else on the website gets a 2-second
 notification saying new bill/law added, with the ID of the bill or law.
 
@@ -143,6 +157,3 @@ We had 10 handlebars:
 8. home: home page. Displays all bills
 9. lawpost: handlebar for individual law information
 10. laws: handlebar for all laws
-
-### 11. Live updates
-We used sockets to give live updates to users when the database is updated
