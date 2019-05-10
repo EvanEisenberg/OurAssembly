@@ -5,9 +5,9 @@
 
 Names: Camilo Calvo-Alcaniz,  Evan Eisenberg, Asher Fink
 
-Date:
+Date: 5/10/19
 
-Project Topic: Crowdsourced Quotes Page
+Project Topic: Crowdsourced Bills and Laws
 
 URL:
 
@@ -15,7 +15,6 @@ URL:
 
 ### 1. Data Format and Storage
 
-<!-- TODO: update this for each of: bill, law, congress member -->
 Data point fields:
 - `Field 1`: Text      `Type: String`
 
@@ -46,7 +45,7 @@ CongressMember: {
 
 ### 2. Add New Data
 
-HTML form route: `/create`
+HTML form route: `/create/bill` and `/create/law`
 
 POST endpoint route: `/api/create`
 
@@ -80,17 +79,21 @@ request(options, function (error, response, body) {
 
 GET endpoint route: `/api/getAllBillsAndLaws`
 
-<!-- Past here not updated yet -->
-
 ### 4. Search Data
 
-Search Field: quote
+Law/Bill Search Field: `bill_id`
+Congress Member Search Field: `name`
 
 ### 5. Navigation Pages
 
-Navigation Filters
-1. Quotes about Science -> `/science`
-2. Quotes about Truth -> `/truth`
-3. Quotes from Thomas Jefferson -> `/jefferson`
-4. Short -> `/short`
-5. Long -> `/long`
+Pages for viewing data
+1. Bills -> `/bills`
+2. Laws -> `/laws`
+3. Congress Members -> `/congressmembers`
+4. About Us -> `/about`
+
+Pages for posting data
+5. Create Bill -> `/create/bill`
+6. Create Law -> `/create/law`
+
+
