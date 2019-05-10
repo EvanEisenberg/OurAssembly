@@ -5,6 +5,8 @@ var exphbs = require('express-handlebars');
 var _ = require("underscore");
 var dotenv = require('dotenv');
 var mongoose = require('mongoose');
+var faker = require('faker');
+var validator = require('validator');
 var CongressMember = require('./models/CongressMember');
 var Bill = require('./models/Bill');
 var Law = require('./models/Law');
@@ -83,7 +85,7 @@ app.use('/public', express.static('public'));
       date_introduced: req.body.date_introduced,
       committee: req.body.committee,
       bill_id: req.body.bill_id,
-      preview: body.text.substring(0, 150)
+      preview: req.body.text.substring(0, 150)
    });
 
    bill.save(function(err) {
@@ -188,7 +190,7 @@ app.get('/create/bill',function(req,res){
 });
 
 app.get('/create/law',function(req,res){
-  res.render('createbill')
+  res.render('createlaw')
 });
 
 app.get('/about',function(req,res){
@@ -205,6 +207,9 @@ app.get('/getAllCongressMembers',function(req,res){
 
  // test this with testing_add_bill.js
  app.post('/addBill', function(req, res) {
+   if(!validator.isInt(req.body.bill_id)) {
+     res.redirect('/bills');
+   }
   var bill = new Bill({
     text: req.body.text,
     authors: req.body.authors,
@@ -231,6 +236,7 @@ app.post("/addLaw", function(req, res) {
 
   law.save(function(err) {
     if(err) throw err
+    io.emit('new law', law);
     res.redirect('/laws');
   });
 });

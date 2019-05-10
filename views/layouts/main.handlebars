@@ -14,6 +14,9 @@
     socket.on('new bill', function(bill){
       $.blockUI({ message: 'New bill ' + bill.bill_id + ' added!' , timeout: 2000 });
     });
+    socket.on('new law', function(law){
+      $.blockUI({ message: 'New law ' + law.bill_id + ' added!' , timeout: 2000 });
+    });
   </script>
 
 </head>

@@ -81,7 +81,7 @@ GET endpoint route: `/api/getAllBillsAndLaws`
 
 ### 4. Search Data
 
-Law a d Bill Search Field: `bill_id`
+Law and Bill Search Field: `bill_id`
 
 Congress Member Search Field: `name`
 
@@ -98,4 +98,11 @@ Pages for posting data
 5. Create Bill -> `/create/bill`
 6. Create Law -> `/create/law`
 
+### 6. Notification System
+Whenever a bill or law is added, anyone else on the website gets a 2-second
+notification saying new bill/law added, with the ID of the bill or law.
 
+### 7. Two additional npm packages
+We used `faker` while testing our program to generate fake data
+We used `validator` to make validate input data on the back-end, such as requiring
+bill IDs to be non-negative integers.
