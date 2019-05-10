@@ -5,15 +5,17 @@
   <meta charset="UTF-8">
   <link rel="stylesheet" type="text/css" href="/public/css/main.css">
   <title>Laws and Bills</title>
-  <script src="/socket.io/socket.io.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="http://malsup.github.io/jquery.blockUI.js" defer></script>
+
   <script>
     var socket = io();
-  //   $('#billForm').submit(function(){
-  //   alert("submitted");
-  //   return false;
-  // });
+    socket.on('new bill', function(bill){
+      $.blockUI({ message: 'New bill ' + bill.bill_id + ' added!' , timeout: 2000 });
+    });
   </script>
+
 </head>
 <div class="nav">
   <div>
@@ -28,7 +30,7 @@
 <body>
   <article>
     <h1>Upload a Bill:</h1>
-    <form id="billForm" method="POST" action="/addBill">
+    <form method="POST" action="/addBill">
       <div class="input-field">
         <label>Bill Text:</label>
         <input type="text" name="text" size="50" placeholder="To Be...">
@@ -49,7 +51,7 @@
         <label>Bill ID:</label>
         <input type="number" name="bill_id" size="50" placeholder="12345">
       </div>
-      <button type="submit">Create Bill</button>
+      <button id="billSubmit" type="submit">Create Bill</button>
     </form>
   </article>
 

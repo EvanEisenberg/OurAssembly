@@ -174,7 +174,8 @@ app.get('/getAllCongressMembers',function(req,res){
   });
   bill.save(function(err) {
         if(err) throw err
-        app.get('/');
+        io.emit('new bill', bill);
+        res.redirect('/'); // changed this - seems to work better
   });
 });
 
