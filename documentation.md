@@ -133,25 +133,32 @@ Pages for posting data
 6. Create Law -> `/create/law`
 7. Add Congress Member -> `/add/congressMember`
 
-### 7. Notification System (using sockets)
+### 7. Filter Pages
+1. Bills from 2010s -> `/bills/2010s`
+2. Bills from 2000s -> `/bills/2000s`
+3. Bills from 1990s -> `/bills/1990s`
+4. Laws from 2010s -> `/laws/2010s`
+5. Laws from 2000s -> `/laws/2000s`
+
+### 8. Notification System (using sockets)
 Whenever a bill or law is added, anyone else on the website gets a 2-second
 notification saying new bill/law added, with the ID of the bill or law.
 
-### 8. Two additional npm packages
+### 9. Two additional npm packages
 We used `faker` while testing our program to generate fake data
 We used `validator` to make validate input data on the back-end, such as requiring
 bill IDs to be non-negative integers.
 
-### 9. Two Modules
+### 10. Two Modules
 We put the functions to create new data points and the functions to save new data points into their own modules. This meant we could reuse code instead of having to write it out every time we used it. We also put the app variable in its own module so the other modules could access it.
 
-### 10. Handlebars
+### 11. Handlebars
 We had 10 handlebars:
 1. main: main handlebar.
 2. about: about page
 3. billpost: handlebar for individual bill information
 4. congressMembers: handlebar for all congress members
-5. creatbill: handlebar for creating new bills
+5. createbill: handlebar for creating new bills
 6. createCongressMembers: handlebar for creating new congress members
 7. createlaw: handlebar for creating new laws
 8. home: home page. Displays all bills

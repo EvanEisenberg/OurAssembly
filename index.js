@@ -149,6 +149,57 @@ app.get('/bills',function(req,res){
   });
 });
 
+
+app.get('/bills/2010s', function(req,res) {
+  Bill.find({date_introduced: {
+    $gte: "2010",
+    $lt: "2020"
+  }}, null, {sort: '-date_introduced'}, function(err, bill){
+    if(err) throw err
+    res.render('home', {bills: bill})
+  });
+})
+
+app.get('/bills/2000s', function(req,res) {
+  Bill.find({date_introduced: {
+    $gte: "2000",
+    $lt: "2010"
+  }}, null, {sort: '-date_introduced'}, function(err, bill){
+    if(err) throw err
+    res.render('home', {bills: bill})
+  });
+})
+
+app.get('/bills/1990s', function(req,res) {
+  Bill.find({date_introduced: {
+    $gte: "1990",
+    $lt: "2000"
+  }}, null, {sort: '-date_introduced'}, function(err, bill){
+    if(err) throw err
+    res.render('home', {bills: bill})
+  });
+})
+
+app.get('/laws/2010s', function(req,res) {
+  Law.find({date_passed: {
+    $gte: "2010",
+    $lt: "2020"
+  }}, null, {sort: '-date_introduced'}, function(err, law){
+    if(err) throw err
+    res.render('laws', {laws: law})
+  });
+})
+
+app.get('/laws/2000s', function(req,res) {
+  Law.find({date_passed: {
+    $gte: "2000",
+    $lt: "2010"
+  }}, null, {sort: '-date_introduced'}, function(err, law){
+    if(err) throw err
+    res.render('laws', {laws: law})
+  });
+})
+
 app.get('/laws',function(req,res){
   Law.find({}, null, {sort: '-date_passed'}, function(err, law){
     if(err) throw err
