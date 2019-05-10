@@ -208,6 +208,7 @@ app.get('/getAllCongressMembers',function(req,res){
    var body = req.body;
   var bill = create.bill(body.text, body.authors, body.date_introduced,
     body.committee, body.name);
+    io.emit('new bill', bill);
 
   save.save(bill, "bill", "/bills", res);
 });
@@ -216,6 +217,7 @@ app.post("/addLaw", function(req, res) {
   var body = req.body;
   var law = create.law(body.text, body.authors, body.date_passed,
     body.committee, body.name);
+    io.emit('new law', law);
 
   save.save(law, "law", "/laws", res);
 });
