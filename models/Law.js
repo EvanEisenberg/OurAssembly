@@ -16,8 +16,12 @@ var lawSchema = new mongoose.Schema({
       type: String,
       required: true
     },
-    bill_id: {
-      type: Number,
+    name: {
+      type: String,
+      required: true
+    },
+    preview: {
+      type: String,
       required: true
     }
 });

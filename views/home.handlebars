@@ -6,20 +6,18 @@
 <div id="homePage">
 	{{#each bills}}
 	<article class="article">
-		<h2 class="bill_id">{{this.bill_id}}</h2> <i>{{this.date_introduced}}</i>
+		<h2 class="name">{{this.name}}</h2> <i>{{this.date_introduced}}</i>
 		<hr>
 		<div class="content">
 			{{{this.preview}}}
 		</div>
-		<a href="/bill/{{this.bill_id}}">Read more...</a>
+		<a href="/bill/{{this.name}}">Read more...</a>
 	</article>
 	<script>
 		$("#search").on("keyup", function () {
 			searchBox = document.getElementById("search").value.toLowerCase();
 			var articles = document.getElementsByClassName("article");
-			console.log(articles);
 			for (var node of articles) {
-				console.log(node);
 				if (!node.textContent.trim().toLowerCase().startsWith(searchBox)) {
 					node.style.display = "none";
 				} else {
@@ -43,7 +41,7 @@
 
 	<article>
 		<h1>There are no Bills or Laws yet </h1>
-		<a href="/addBill">Create the first Bill!</a>
+		<a href="/create/bill">Create the first Bill!</a>
 	</article>
 	{{/each}}
 	<div id="emptyText" style="display: none">There are no bills that match your search :(</div>

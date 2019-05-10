@@ -10,6 +10,9 @@ var validator = require('validator');
 var CongressMember = require('./models/CongressMember');
 var Bill = require('./models/Bill');
 var Law = require('./models/Law');
+var save = require("./modules/save");
+var create = require("./modules/create");
+var app = require("./modules/app");
 
 dotenv.config(); // load environment vars
 
@@ -21,7 +24,7 @@ mongoose.connection.on('error', function() {
     process.exit(1);
 });
 
-var app = express();
+
 
 // these two lines are necessary for sockets
 var http = require('http').Server(app);
@@ -79,65 +82,56 @@ app.use('/public', express.static('public'));
 
  // test this with testing_add_bill.js
  app.post("/api/addBill", function(req, res) {
-   var bill = new Bill({
-      text: req.body.text,
-      authors: req.body.authors,
-      date_introduced: req.body.date_introduced,
-      committee: req.body.committee,
-      bill_id: req.body.bill_id,
-      preview: req.body.text.substring(0, 150)
-   });
+    var body = req.body;
+    var bill = create.bill(body.text, body.authors, body.date_introduced,
+       body.committee, body.name);
 
-   bill.save(function(err) {
-         if(err) throw err
-         return res.send("Bill saved!")
-   });
+   save.saveApi(bill, "Bill", res);
  });
 
  // test this with testing_add_law.js
  app.post("/api/addLaw", function(req, res) {
-   var law = new Law({
-      text: req.body.text,
-      authors: req.body.authors,
-      date_passed: req.body.date_passed,
-      committee: req.body.committee,
-      bill_id: req.body.bill_id
-   });
+   var body = req.body;
+   var law = create.law(body.text, body.authors, body.date_passed,
+      body.committee, body.name);
 
-   law.save(function(err) {
-         if(err) throw err
-         return res.send("Law saved!")
-   });
+   save.saveApi(law, "Law", res);
  });
 
  // test this with testing_add_congress_member.js
  app.post("/api/addCongressMember", function(req, res) {
-   var congressMember = new CongressMember({
-      name: req.body.name,
-      party: req.body.party,
-      year_inaugurated: req.body.year_inaugurated
-   });
+  if(!validator.isNumeric(req.body.year_inaugurated)) {
+    res.send('Error: year_inaugurated must be a number only');
+  };
+    var body = req.body;
+    var congressMember = create.congressMember(body.name, body.party,
+      body.year_inaugurated);
 
-   congressMember.save(function(err) {
-         if(err) throw err
-         return res.send("Congress Member saved!")
-   });
+   save.saveApi(congressMember, "Congress Member", res);
  });
 
  // test this with testing_delete_bill.js
  app.delete("/api/deleteBill", function(req, res) {
-   Bill.deleteOne({bill_id: req.body.bill_id},function(err, bill){
+   Bill.deleteOne({name: req.body.name},function(err, bill){
+     console.log(req.body.name);
          if(err) throw err
-         return res.send("If present, bill with id " + req.body.bill_id + " deleted");
+         return res.send("If present, bill with name " + req.body.name + " deleted");
    });
  });
 
  app.delete("/api/deleteLaw", function(req, res) {
-   Law.deleteOne({bill_id: req.body.bill_id},function(err, law){
+   Law.deleteOne({name: req.body.name},function(err, law){
          if(err) throw err
-         return res.send("If present, law with id " + req.body.bill_id + " deleted");
+         return res.send("If present, law with name " + req.body.name + " deleted");
    });
  });
+
+ app.delete("/api/deleteCongressMember", function(req, res) {
+  CongressMember.deleteOne({name: req.body.name},function(err, law){
+        if(err) throw err
+        return res.send("If present, Congrss Member with name " + req.body.name + " deleted");
+  });
+});
 
 
  /* Non-API endpoints here */
@@ -163,23 +157,23 @@ app.get('/laws',function(req,res){
 });
 
 app.get('/congressmembers',function(req,res){
-  CongressMember.find({}, null, function(err, con){
+  CongressMember.find({}, null, {sort: 'name'}, function(err, con){
     if(err) throw err
     res.render('congressmembers', {congressmembers: con})
   });
 });
 
-app.get('/bill/:id', function(req, res) {
-  var id = req.params.id;
-  Bill.find({ 'bill_id': id }, function (err, rets) {
+app.get('/bill/:name', function(req, res) {
+  var name = req.params.name;
+  Bill.find({ 'name': name }, function (err, rets) {
     if(err) throw err
     res.render('billpost', {bills: rets})
   });
 });
 
-app.get('/law/:id', function(req, res) {
-  var id = req.params.id;
-  Law.find({ 'bill_id': id }, function (err, rets) {
+app.get('/law/:name', function(req, res) {
+  var name = req.params.name;
+  Law.find({ 'name': name }, function (err, rets) {
     if(err) throw err
     res.render('lawpost', {laws: rets})
   });
@@ -191,6 +185,10 @@ app.get('/create/bill',function(req,res){
 
 app.get('/create/law',function(req,res){
   res.render('createlaw')
+});
+
+app.get('/add/congressMember', function(req,res) {
+  res.render('createCongressMember');
 });
 
 app.get('/about',function(req,res){
@@ -207,144 +205,32 @@ app.get('/getAllCongressMembers',function(req,res){
 
  // test this with testing_add_bill.js
  app.post('/addBill', function(req, res) {
-   if(!validator.isInt(req.body.bill_id)) {
-     res.redirect('/bills');
-   }
-  var bill = new Bill({
-    text: req.body.text,
-    authors: req.body.authors,
-    date_introduced: req.body.date_introduced,
-    committee: req.body.committee,
-    bill_id: req.body.bill_id,
-    preview: req.body.text.substring(0, 150)
-  });
-  bill.save(function(err) {
-        if(err) throw err
-        io.emit('new bill', bill);
-        res.redirect('/bills'); // changed this - seems to work better
-  });
+   var body = req.body;
+  var bill = create.bill(body.text, body.authors, body.date_introduced,
+    body.committee, body.name);
+
+  save.save(bill, "bill", "/bills", res);
 });
 
 app.post("/addLaw", function(req, res) {
-  var law = new Law({
-     text: req.body.text,
-     authors: req.body.authors,
-     date_passed: req.body.date_passed,
-     committee: req.body.committee,
-     bill_id: req.body.bill_id
-  });
+  var body = req.body;
+  var law = create.law(body.text, body.authors, body.date_passed,
+    body.committee, body.name);
 
-  law.save(function(err) {
-    if(err) throw err
-    io.emit('new law', law);
-    res.redirect('/laws');
-  });
+  save.save(law, "law", "/laws", res);
 });
 
-// test this with testing_add_law.js
-app.post("/api/addLaw", function(req, res) {
-  var law = new Law({
-     text: req.body.text,
-     authors: req.body.authors,
-     date_passed: req.body.date_passed,
-     committee: req.body.committee,
-     bill_id: req.body.bill_id
-  });
+app.post("/addCongressMember", function(req, res) {
+  if(!validator.isNumeric(req.body.year_inaugurated)) {
+    res.redirect('/congressmembers');
+  };
+  var body = req.body;
+  var congressMember = create.congressMember(body.name, body.party,
+    body.year_inaugurated);
+
+ save.save(congressMember, "Congress Member", "/congressmembers", res);
 });
 
-// test this with testing_add_congress_member.js
-app.post("/api/addCongressMember", function(req, res) {
-  var congressMember = new CongressMember({
-     name: req.body.name,
-     party: req.body.party,
-     year_inaugurated: req.body.year_inaugurated
-  });
-
-  congressMember.save(function(err) {
-        if(err) throw err
-        return res.send("Congress Member saved!")
-  });
-});
-
-// test this with testing_delete_bill.js
-app.delete("/api/deleteBill", function(req, res) {
-  Bill.deleteOne({bill_id: req.body.bill_id},function(err, bill){
-        if(err) throw err
-        return res.send("If present, bill with id " + req.body.bill_id + " deleted");
-  });
-});
-
-app.delete("/api/deleteLaw", function(req, res) {
-  Law.deleteOne({bill_id: req.body.bill_id},function(err, law){
-        if(err) throw err
-        return res.send("If present, law with id " + req.body.bill_id + " deleted");
-  });
-});
-
-/*
-app.get('/science',function(req,res){
-  var new_quotes = [];
-    _DATA.forEach(function(quo) {
-        if (quo.categories.includes("Science")) {
-            new_quotes.push(quo);
-        }
-    });
-    res.render('home', {data: new_quotes});
-});
-
-app.get('/truth',function(req,res){
-  var new_quotes = [];
-
-    _DATA.forEach(function(quo) {
-        if (quo.categories.includes("Truth")) {
-            new_quotes.push(quo);
-        }
-    });
-    res.render('home', {data: new_quotes});
-});
-
-app.get('/jefferson',function(req,res){
-  var new_quotes = [];
-    _DATA.forEach(function(quo) {
-        if (quo.author == "Thomas Jefferson") {
-            new_quotes.push(quo);
-        }
-    });
-    res.render('home', {data: new_quotes});
-});
-
-app.get('/short',function(req,res){
-  var new_quotes = [];
-    _DATA.forEach(function(quo) {
-        if (quo.quote.length < 5) {
-            new_quotes.push(quo);
-        }
-    });
-    res.render('home', {data: new_quotes});
-});
-
-app.get('/long',function(req,res){
-  var new_quotes = [];
-    _DATA.forEach(function(quo) {
-        if (quo.quote.length >= 10) {
-            new_quotes.push(quo);
-        }
-    });
-    res.render('home', {data: new_quotes});
-});
-
-app.post('/create', function(req, res) {
-    var body = req.body;
-    // Transform categories
-    body.categories = body.categories.split(" ");
-
-    // Save new blog post
-    _DATA.push(req.body);
-    dataUtil.saveData(_DATA);
-    res.redirect("/");
-});
-
-*/
 
 // necessary for sockets to use "http" here
 http.listen(process.env.PORT || 3000, function() {

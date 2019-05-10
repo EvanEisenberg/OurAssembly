@@ -6,11 +6,9 @@
 <div id="homePage">
 	{{#each congressmembers}}
 	<article class="article">
-		<h2 class="bill_id">{{this.name}}</h2> <i>{{this.party}}</i>
+		<h2 class="name">{{this.name}}</h2> <i>{{this.party}}, </i>
+		<i>Inaugurated in {{{this.year_inaugurated}}}</i>
 		<hr>
-		<div class="content">
-			Inaugurated in {{{this.year_inaugurated}}}
-		</div>
 	</article>
 	<script>
 		$("#search").on("keyup", function () {

@@ -6,20 +6,18 @@
 <div id="homePage">
 	{{#each laws}}
 	<article class="article">
-		<h2 class="bill_id">{{this.bill_id}}</h2> <i>{{this.date_passed}}</i>
+		<h2 class="name">{{this.name}}</h2> <i>{{this.date_passed}}</i>
 		<hr>
 		<div class="content">
-			{{{this.text}}}
+			{{{this.preview}}}
 		</div>
-		<a href="/law/{{this.bill_id}}">Read more...</a>
+		<a href="/law/{{this.name}}">Read more...</a>
 	</article>
 	<script>
 		$("#search").on("keyup", function () {
 			searchBox = document.getElementById("search").value.toLowerCase();
 			var articles = document.getElementsByClassName("article");
-			console.log(articles);
 			for (var node of articles) {
-				console.log(node);
 				if (!node.textContent.trim().toLowerCase().startsWith(searchBox)) {
 					node.style.display = "none";
 				} else {

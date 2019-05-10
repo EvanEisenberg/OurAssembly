@@ -4,6 +4,10 @@
     <h1>Upload a Bill:</h1>
     <form method="POST" action="/addBill">
       <div class="input-field">
+        <label>Bill Name:</label>
+        <input type="String" name="name" size="50" placeholder="Title">
+      </div>
+      <div class="input-field">
         <label>Bill Text:</label>
         <input type="text" name="text" size="50" placeholder="Bill text">
       </div>
@@ -18,10 +22,6 @@
       <div class="input-field">
         <label>Committee:</label>
         <input type="text" name="committee" size="50" placeholder="Interior">
-      </div>
-      <div class="input-field">
-        <label>Bill ID:</label>
-        <input type="number" name="bill_id" size="50" placeholder="12345">
       </div>
       <button type="submit">Create Bill</button>
     </form>
