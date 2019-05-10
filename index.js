@@ -347,6 +347,6 @@ app.post('/create', function(req, res) {
 */
 
 // necessary for sockets to use "http" here
-http.listen(3000, function() {
-  console.log('Listening on 3000!');
+http.listen(process.env.PORT || 3000, function() {
+  console.log('Listening!');
 });
