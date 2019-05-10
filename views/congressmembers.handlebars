@@ -1,17 +1,16 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
 <h2>Search</h2>
-<input type="text" id="search" placeholder="Search by Bill Id"></input>
+<input type="text" id="search" placeholder="Search by Name"></input>
 
-<h2>Recently Introduced Bills:</h2>
+<h2>Congressmembers:</h2>
 <div id="homePage">
-	{{#each bills}}
+	{{#each congressmembers}}
 	<article class="article">
-		<h2 class="bill_id">{{this.bill_id}}</h2> <i>{{this.date_introduced}}</i>
+		<h2 class="bill_id">{{this.name}}</h2> <i>{{this.party}}</i>
 		<hr>
 		<div class="content">
-			{{{this.preview}}}
+			Inaugurated in {{{this.year_inaugurated}}}
 		</div>
-		<a href="/bill/{{this.bill_id}}">Read more...</a>
 	</article>
 	<script>
 		$("#search").on("keyup", function () {
@@ -42,9 +41,8 @@
 	{{else}}
 
 	<article>
-		<h1>There are no Bills or Laws yet </h1>
-		<a href="/addBill">Create the first Bill!</a>
+		<h1>There are no Congress Members yet </h1>
 	</article>
 	{{/each}}
-	<div id="emptyText" style="display: none">There are no bills that match your search :(</div>
+	<div id="emptyText" style="display: none">There are no people that match your search :(</div>
 </div>

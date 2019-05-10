@@ -9,40 +9,16 @@
 </head>
 <div class="nav">
   <div>
-    <div class="tag"><a href="/bill">Bills</a></div>
-    <div class="tag"><a href="/law">Laws</a></div>
+    <div class="tag"><a href="/bills">Bills</a></div>
+    <div class="tag"><a href="/laws">Laws</a></div>
+    <div class="tag"><a href="/congressmembers">Congress Members</a></div>
     <div class="tag"><a href="/create/bill">Create Bill</a></div>
     <div class="tag"><a href="/create/law">Create Law</a></div>
+    <div class="tag"><a href="/about">About Us</a></div>
   </div>
 </div>
 
 <body>
-  <article>
-    <h1>Upload a Bill:</h1>
-    <form method="POST" action="/addBill">
-      <div class="input-field">
-        <label>Bill Text:</label>
-        <input type="text" name="text" size="50" placeholder="To Be...">
-      </div>
-      <div class="input-field">
-        <label>Authors:</label>
-        <input type="text" name="authors" size="50" placeholder="John Adams, George Washington (comma separated)">
-      </div>
-      <div class="input-field">
-        <label>Date Introduced:</label>
-        <input type="date" name="date_introduced" size="50" placeholder="05/08/2019">
-      </div>
-      <div class="input-field">
-        <label>Committee:</label>
-        <input type="text" name="committee" size="50" placeholder="Interior">
-      </div>
-      <div class="input-field">
-        <label>Bill ID:</label>
-        <input type="number" name="bill_id" size="50" placeholder="12345">
-      </div>
-      <button type="submit">Create Bill</button>
-    </form>
-  </article>
 
   {{{body}}}
 

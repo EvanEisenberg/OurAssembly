@@ -138,12 +138,53 @@ app.get('/',function(req,res){
   });
 });
 
+app.get('/bills',function(req,res){
+  Bill.find({}, null, {sort: '-date_introduced'}, function(err, bill){
+    if(err) throw err
+    res.render('home', {bills: bill})
+  });
+});
 
-app.get('/getAllLaws', function(req,res) {
-  Law.find({}, null, {sort: '-date_introduced'}, function(err, law){
+app.get('/laws',function(req,res){
+  Law.find({}, null, {sort: '-date_passed'}, function(err, law){
     if(err) throw err
     res.render('laws', {laws: law})
   });
+});
+
+app.get('/congressmembers',function(req,res){
+  CongressMember.find({}, null, function(err, con){
+    if(err) throw err
+    res.render('congressmembers', {congressmembers: con})
+  });
+});
+
+app.get('/bill/:id', function(req, res) {
+  var id = req.params.id;
+  Bill.find({ 'bill_id': id }, function (err, rets) {
+    if(err) throw err
+    res.render('billpost', {bills: rets})
+  });
+});
+
+app.get('/law/:id', function(req, res) {
+  var id = req.params.id;
+  Law.find({ 'bill_id': id }, function (err, rets) {
+    if(err) throw err
+    res.render('lawpost', {laws: rets})
+  });
+});
+
+app.get('/create/bill',function(req,res){
+  res.render('createbill')
+});
+
+app.get('/create/law',function(req,res){
+  res.render('createbill')
+});
+
+app.get('/about',function(req,res){
+  res.render('about')
 });
 
 app.get('/getAllCongressMembers',function(req,res){
@@ -155,7 +196,7 @@ app.get('/getAllCongressMembers',function(req,res){
 
 
  // test this with testing_add_bill.js
- app.post("/addBill", function(req, res) {
+ app.post('/addBill', function(req, res) {
   var bill = new Bill({
     text: req.body.text,
     authors: req.body.authors,
@@ -166,7 +207,22 @@ app.get('/getAllCongressMembers',function(req,res){
   });
   bill.save(function(err) {
         if(err) throw err
-        app.get('/');
+        res.redirect('/bills');
+  }); 
+});
+
+app.post("/addLaw", function(req, res) {
+  var law = new Law({
+     text: req.body.text,
+     authors: req.body.authors,
+     date_passed: req.body.date_passed,
+     committee: req.body.committee,
+     bill_id: req.body.bill_id
+  });
+
+  law.save(function(err) {
+    if(err) throw err
+    res.redirect('/laws');
   }); 
 });
 
@@ -178,11 +234,6 @@ app.post("/api/addLaw", function(req, res) {
      date_passed: req.body.date_passed,
      committee: req.body.committee,
      bill_id: req.body.bill_id
-  });
-
-  law.save(function(err) {
-        if(err) throw err
-        return res.send("Law saved!")
   });
 });
 
@@ -215,70 +266,6 @@ app.delete("/api/deleteLaw", function(req, res) {
   });
 });
 
-/*
-app.get('/science',function(req,res){
-  var new_quotes = [];
-    _DATA.forEach(function(quo) {
-        if (quo.categories.includes("Science")) {
-            new_quotes.push(quo);
-        }
-    });
-    res.render('home', {data: new_quotes});
-});
-
-app.get('/truth',function(req,res){
-  var new_quotes = [];
-
-    _DATA.forEach(function(quo) {
-        if (quo.categories.includes("Truth")) {
-            new_quotes.push(quo);
-        }
-    });
-    res.render('home', {data: new_quotes});
-});
-
-app.get('/jefferson',function(req,res){
-  var new_quotes = [];
-    _DATA.forEach(function(quo) {
-        if (quo.author == "Thomas Jefferson") {
-            new_quotes.push(quo);
-        }
-    });
-    res.render('home', {data: new_quotes});
-});
-
-app.get('/short',function(req,res){
-  var new_quotes = [];
-    _DATA.forEach(function(quo) {
-        if (quo.quote.length < 5) {
-            new_quotes.push(quo);
-        }
-    });
-    res.render('home', {data: new_quotes});
-});
-
-app.get('/long',function(req,res){
-  var new_quotes = [];
-    _DATA.forEach(function(quo) {
-        if (quo.quote.length >= 10) {
-            new_quotes.push(quo);
-        }
-    });
-    res.render('home', {data: new_quotes});
-});
-
-app.post('/create', function(req, res) {
-    var body = req.body;
-    // Transform categories
-    body.categories = body.categories.split(" ");
-
-    // Save new blog post
-    _DATA.push(req.body);
-    dataUtil.saveData(_DATA);
-    res.redirect("/");
-});
-
-*/
 app.listen(3000, function() {
   console.log('Listening on 3000!');
 });
