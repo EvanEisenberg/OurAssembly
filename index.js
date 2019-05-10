@@ -21,6 +21,14 @@ mongoose.connection.on('error', function() {
 
 var app = express();
 
+// these two lines are necessary for sockets
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+
+io.on('connection', function(socket) {
+    console.log('NEW connection.');
+});
+
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -34,7 +42,7 @@ app.use('/public', express.static('public'));
  */
 
  /* API endpoints here */
- 
+
  app.get('/api/getAllBills',function(req,res){
    Bill.find({},function(err, bills){
          if(err) throw err
@@ -202,13 +210,14 @@ app.get('/getAllCongressMembers',function(req,res){
     authors: req.body.authors,
     date_introduced: req.body.date_introduced,
     committee: req.body.committee,
-    bill_id: req.body.bill_id, 
+    bill_id: req.body.bill_id,
     preview: req.body.text.substring(0, 150)
   });
   bill.save(function(err) {
         if(err) throw err
-        res.redirect('/bills');
-  }); 
+        io.emit('new bill', bill);
+        res.redirect('/bills'); // changed this - seems to work better
+  });
 });
 
 app.post("/addLaw", function(req, res) {
@@ -223,7 +232,7 @@ app.post("/addLaw", function(req, res) {
   law.save(function(err) {
     if(err) throw err
     res.redirect('/laws');
-  }); 
+  });
 });
 
 // test this with testing_add_law.js
@@ -266,6 +275,72 @@ app.delete("/api/deleteLaw", function(req, res) {
   });
 });
 
-app.listen(3000, function() {
+/*
+app.get('/science',function(req,res){
+  var new_quotes = [];
+    _DATA.forEach(function(quo) {
+        if (quo.categories.includes("Science")) {
+            new_quotes.push(quo);
+        }
+    });
+    res.render('home', {data: new_quotes});
+});
+
+app.get('/truth',function(req,res){
+  var new_quotes = [];
+
+    _DATA.forEach(function(quo) {
+        if (quo.categories.includes("Truth")) {
+            new_quotes.push(quo);
+        }
+    });
+    res.render('home', {data: new_quotes});
+});
+
+app.get('/jefferson',function(req,res){
+  var new_quotes = [];
+    _DATA.forEach(function(quo) {
+        if (quo.author == "Thomas Jefferson") {
+            new_quotes.push(quo);
+        }
+    });
+    res.render('home', {data: new_quotes});
+});
+
+app.get('/short',function(req,res){
+  var new_quotes = [];
+    _DATA.forEach(function(quo) {
+        if (quo.quote.length < 5) {
+            new_quotes.push(quo);
+        }
+    });
+    res.render('home', {data: new_quotes});
+});
+
+app.get('/long',function(req,res){
+  var new_quotes = [];
+    _DATA.forEach(function(quo) {
+        if (quo.quote.length >= 10) {
+            new_quotes.push(quo);
+        }
+    });
+    res.render('home', {data: new_quotes});
+});
+
+app.post('/create', function(req, res) {
+    var body = req.body;
+    // Transform categories
+    body.categories = body.categories.split(" ");
+
+    // Save new blog post
+    _DATA.push(req.body);
+    dataUtil.saveData(_DATA);
+    res.redirect("/");
+});
+
+*/
+
+// necessary for sockets to use "http" here
+http.listen(3000, function() {
   console.log('Listening on 3000!');
 });
