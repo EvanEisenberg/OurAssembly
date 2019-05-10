@@ -9,7 +9,7 @@ Date: 5/10/19
 
 Project Topic: Crowdsourced Bills and Laws
 
-URL: https://ourassembly.herokuapp.com/
+URL: https://ourassemblyapp.herokuapp.com/
 
 ---
 
@@ -54,7 +54,7 @@ var request = require("request");
 
 var options = {
     method: 'POST',
-    url: 'https://ourassembly.herokuapp.com/api/addBill',
+    url: 'https://ourassemblyapp.herokuapp.com/api/addBill',
     headers: {
         'content-type': 'application/x-www-form-urlencoded'
     },
@@ -80,7 +80,7 @@ var request = require("request");
 
 var options = {
     method: 'DELETE',
-    url: 'https://ourassembly.herokuapp.com/api/deleteBill',
+    url: 'https://ourassemblyapp.herokuapp.com/api/deleteBill',
     headers: {
         'content-type': 'application/x-www-form-urlencoded'
     },
@@ -143,3 +143,6 @@ We had 10 handlebars:
 8. home: home page. Displays all bills
 9. lawpost: handlebar for individual law information
 10. laws: handlebar for all laws
+
+### 11. Live updates
+We used sockets to give live updates to users when the database is updated
