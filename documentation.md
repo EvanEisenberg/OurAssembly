@@ -1,5 +1,5 @@
 
-# Bills, Congress Stuff
+# OurAssembly Documentation
 
 ---
 
@@ -81,7 +81,8 @@ GET endpoint route: `/api/getAllBillsAndLaws`
 
 ### 4. Search Data
 
-Law/Bill Search Field: `bill_id`
+Law a d Bill Search Field: `bill_id`
+
 Congress Member Search Field: `name`
 
 ### 5. Navigation Pages
@@ -93,6 +94,7 @@ Pages for viewing data
 4. About Us -> `/about`
 
 Pages for posting data
+
 5. Create Bill -> `/create/bill`
 6. Create Law -> `/create/law`
 
